@@ -25,7 +25,7 @@ def number_guessing_game():
             print(f"Correct! You guessed the number in {attempts} attempts.")
             print("Your guesses were:", guess_history)
 
-def computerguess():
+def computer_guesses():
     print("Think of a number between 1 and 100. I will try to guess it!")
     input("Press Enter when you're ready...")
     low = 1
@@ -49,10 +49,12 @@ def computerguess():
            print("Please enter 'correct', 'low', or 'high'.")
       
 
+mode = input("Choose mode: '1' for player guesses, '2' for computer guesses: ")
 
+if mode == '1':
+    number_guessing_game()
+elif mode == '2':
+    computer_guesses()
 
-
-
-number_guessing_game()
 
 
