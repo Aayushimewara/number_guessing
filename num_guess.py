@@ -25,6 +25,33 @@ def number_guessing_game():
             print(f"Correct! You guessed the number in {attempts} attempts.")
             print("Your guesses were:", guess_history)
 
+def computerguess():
+    print("Think of a number between 1 and 100. I will try to guess it!")
+    input("Press Enter when you're ready...")
+    low = 1
+    high = 100
+    attempts = 0
+    while low <= high:
+        guess = (low + high) // 2
+        attempts += 1
+        print(f"My guess is: {guess}")
+    
+        feedback = input("Is it 'correct', 'low', or 'high'? ").lower()
+
+        if feedback == "correct":
+           print(f"I guessed your number in {attempts} tries!")
+           break
+        elif feedback == "low":
+           low = guess + 1
+        elif feedback == "high":
+           high = guess - 1
+        else:
+           print("Please enter 'correct', 'low', or 'high'.")
+      
+
+
+
+
 
 number_guessing_game()
 
