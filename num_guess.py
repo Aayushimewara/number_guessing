@@ -1,75 +1,52 @@
 import random
-def number_guessing_game():
-    player_name = input("Enter your name: ")
-    number_to_guess = random.randint(1, 100)  # Random number between 1 and 100
-    guess = None  # Initialize guess variable
-    attempts = 0  # Count attempts
-    guess_history = [] #list
-    print(f"Welcome to the Number Guessing Game {player_name}!")
-    while guess != number_to_guess:
-        guess = int(input("Enter your guess (between 1 and 100): "))
-        undo = input("Type 'undo' to remove your last guess, or press Enter to continue: ")
-        if undo.lower() == 'undo' and guess_history:
-         removed = guess_history.pop()
-         attempts -= 1
-         print(f"Last guess {removed} removed. Try again.")
-         continue
 
-        guess_history.append(guess)
-        attempts += 1
+class PlayerGuessesGame:
+    def __init__(self, player_name):
+        self.player_name = player_name
+        self.number_to_guess = random.randint(1, 100)
+        self.attempts = 0
+        self.guess_history = []
 
-        if guess < number_to_guess:
-            print("Too low! Try again.")
-        elif guess > number_to_guess:
-            print("Too high! Try again.")
+    def make_guess(self, guess):
+        self.guess_history.append(guess)
+        self.attempts += 1
+        if guess < self.number_to_guess:
+            return "Too low!"
+        elif guess > self.number_to_guess:
+            return "Too high!"
         else:
-         #  print(f"Correct! You guessed the number in {attempts} attempts.")
-            player_stats = {
-                "name": player_name,
-                "attempts": attempts,
-                "result": "Win"
-            }
-            print("\nGame Summary:")
-            for key, value in player_stats.items():
-                print(f"{key.capitalize()}: {value}")
+            return "Correct!"
 
+    def undo_last_guess(self):
+        if self.guess_history:
+            removed = self.guess_history.pop()
+            self.attempts -= 1
+            return f"Removed guess: {removed}"
+        return "Nothing to undo."
 
-            print("Your guesses were:", guess_history)
+    def get_summary(self):
+        return {
+            "name": self.player_name,
+            "attempts": self.attempts,
+            "guesses": self.guess_history
+        }
 
-def computer_guesses():
-    print("Think of a number between 1 and 100. I will try to guess it!")
-    input("Press Enter when you're ready...")
-    low = 1
-    high = 100
-    attempts = 0
-    while low <= high:
-        guess = (low + high) // 2
-        attempts += 1
-        print(f"My guess is: {guess}")
-    
-        feedback = input("Is it 'correct', 'low', or 'high'? ").lower()
+class ComputerGuessesGame:
+    def __init__(self):
+        self.low = 1
+        self.high = 100
+        self.attempts = 0
+        self.current_guess = None
 
-        if feedback == "correct":
-           print(f"I guessed your number in {attempts} tries!")
-           break
-        elif feedback == "low":
-           low = guess + 1
+    def next_guess(self):
+        if self.low > self.high:
+            return None
+        self.current_guess = (self.low + self.high) // 2
+        self.attempts += 1
+        return self.current_guess
+
+    def update_feedback(self, feedback):
+        if feedback == "low":
+            self.low = self.current_guess + 1
         elif feedback == "high":
-           high = guess - 1
-        else:
-           print("Please enter 'correct', 'low', or 'high'.")
-      
-while True:
-    mode = input("Choose mode: '1' for player guesses, '2' for computer guesses, 'q' to quit: ")
-
-    if mode == '1':
-        number_guessing_game()
-    elif mode == '2':
-        computer_guesses()
-    elif mode.lower() == 'q':
-        print("Thanks for playing!Goodbye.")
-        break
-    else:
-        print("Invalid Mode Selected.")
-
-
+            self.high = self.current_guess - 1
