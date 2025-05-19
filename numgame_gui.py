@@ -8,7 +8,7 @@ root.geometry("400x400")
 
 player_game = None
 computer_game = None
-player_name = ""
+player_name = ""    	
 
 # --- Name Entry Frame ---
 name_frame = tk.Frame(root)
@@ -93,13 +93,15 @@ computer_feedback_label.pack()
 def computer_guess():
     guess = computer_game.next_guess()
     if guess is not None:
+        guessing_button.pack_forget()
         computer_guess_label.config(text=f"My guess is: {guess}")
         computer_feedback_label.config(text="Choose: Too Low, Too High, or Correct")
     else:
         computer_guess_label.config(text="I couldn't guess it!")
         computer_feedback_label.config(text="")
 
-tk.Button(comp_frame, text="Start Guessing", command=computer_guess).pack(pady=5)
+guessing_button= tk.Button(comp_frame, text="Start Guessing", command=computer_guess)
+guessing_button.pack(pady=5)
 
 def feedback_response(feedback):
     if feedback == "correct":
